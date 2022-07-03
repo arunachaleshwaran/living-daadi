@@ -3,9 +3,8 @@ import { PresenceTransition, ZStack } from 'native-base';
 import { Circle } from 'native-base'
 import { CoinColor } from '../../theme'
 import { Pressable } from 'react-native';
-export default function Coins({ oneUnitLength, top, left, player, OnClick, completed, id }) {
+export default function Coins({ oneUnitLength, top, left, player, completed, id, disabled, onPress }) {
 	if (completed) return <></>
-	console.log(id);
 	const [visible, setVisible] = useState(false)
 	const [translation, setTranslation] = useState({ x: 3, y: 3 })
 	let trans = { x: left - translation.x, y: top - translation.y };
@@ -31,7 +30,7 @@ export default function Coins({ oneUnitLength, top, left, player, OnClick, compl
 				transition: { duration: 500 }
 			}}>
 			<Circle w={oneUnitLength / 2} h={oneUnitLength / 2} bg={CoinColor[player].bg} ></Circle >
-		</PresenceTransition> : <Pressable onPress={OnClick(id)}>
+		</PresenceTransition> : <Pressable disabled={disabled} onPress={onPress}>
 			<Circle w={oneUnitLength / 2} h={oneUnitLength / 2} bg={CoinColor[player].bg} ></Circle >
 		</Pressable>}
 	</ZStack >)
