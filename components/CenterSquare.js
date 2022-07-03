@@ -6,7 +6,7 @@ export default function CenterSquare({ children }) {
 	const { width, height } = useWindowDimensions();
 	return (
 		<Flex height={'full'} width={'full'} direction={'row'} grow={1} shrink={1} justifyContent={'center'} alignItems={'center'}>
-			{height > width && <AspectRatio width={'full'} ratio={{ base: 1 / 1 }}>
+			{height > width && <AspectRatio width={'full'} ratio={{ base: 1 / 1 }} bg={'amber.700'}>
 				{children}
 			</AspectRatio>}
 			{width >= height && <AspectRatio height={'full'} ratio={{ base: 1 / 1 }}>{children}</AspectRatio>}
