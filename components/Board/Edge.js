@@ -1,6 +1,6 @@
 import { Box } from 'native-base'
 import React from 'react'
-import BoardColor from '../../theme/board'
+import { BoardColor } from '../../theme'
 export default function Edge({ unit, oneUnitLength, top, left, isHorizontal }) {
 	if (isHorizontal) {
 		return (

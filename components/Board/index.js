@@ -1,8 +1,9 @@
 import Node from './Node'
 import Edge from './Edge'
-import { Box, Flex } from 'native-base'
+import { Box, Flex, Pressable, Text } from 'native-base'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import CenterSquare from '../CenterSquare'
+import Coins from './Coins'
 
 const edges = [
 	{ key: '0003', units: 3, isHorizontal: true, location: { x: 0, y: 0 } },
@@ -65,12 +66,42 @@ const node = [
 	{ key: '63', location: { x: 3, y: 6 } },
 	{ key: '66', location: { x: 6, y: 6 } },
 ]
+const whiteCoins = [
+	{
+		key: 0, location: { x: 0, y: 0 },
+		key: 1, location: { x: 1, y: 0 },
+		key: 2, location: { x: 0, y: 0 },
+		key: 3, location: { x: 1, y: 0 },
+		key: 4, location: { x: 0, y: 0 },
+		key: 5, location: { x: 1, y: 0 },
+		key: 6, location: { x: 0, y: 0 },
+		key: 7, location: { x: 1, y: 0 },
+		key: 8, location: { x: 0, y: 0 },
+
+	},
+]
 export default function Board() {
 	const board = useRef({ current: null })
 	const [size, setSize] = useState(0)
+	let locations = [
+		{ y: 0, x: 1 },
+		{ y: 0, x: 0 },
+		{ y: 0, x: 1 },
+		{ y: 0, x: 0 },
+		{ y: 0, x: 1 },
+		{ y: 0, x: 0 },
+		{ y: 0, x: 1 },
+		{ y: 0, x: 0 },
+		{ y: 0, x: 1 },
+
+	];
+	const [input, setInput] = useState(0)
 	useEffect(() => {
 		setSize(() => board.current.clientWidth / 6)
 	}, [board.current.clientHeight])
+	const clickAction = () => {
+		setInput(() => input + 1)
+	}
 	return (
 		<CenterSquare>
 			<Box position={'relative'} justifyContent={'center'} alignItems={'center'} m={'10%'} ref={board}>
@@ -86,7 +117,12 @@ export default function Board() {
 					{node.map(({ key, location }) => (
 						<Node key={key} top={location.y} left={location.x} oneUnitLength={size} />
 					))}
+					{/* {whiteCoins.map(({ key, location }) => <Coins key={key} top={locations[input].y} left={locations[input].x} oneUnitLength={size} player={'BLACK'}></Coins>)} */}
+					<Coins top={locations[input].y} left={locations[input].x} oneUnitLength={size} player={'BLACK'}></Coins>
 				</>}
+				<Pressable onPress={clickAction}>
+					<Text>Press me</Text>
+				</Pressable>
 			</Box>
 		</CenterSquare>
 	)
