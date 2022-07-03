@@ -2,33 +2,35 @@ import React, { useEffect, useState } from 'react'
 import { PresenceTransition, ZStack } from 'native-base';
 import { Circle } from 'native-base'
 import { CoinColor } from '../../theme'
-export default function Coins({ oneUnitLength, top, left, player }) {
+import { Pressable } from 'react-native';
+export default function Coins({ oneUnitLength, top, left, player, OnClick }) {
 	const [visible, setVisible] = useState(false)
-	const [translation, setTranslation] = useState({
-		initialTranslation: { x: left * oneUnitLength, y: top * oneUnitLength },
-		currentTranslation: { x: undefined, y: undefined },
-	})
+	const [translation, setTranslation] = useState({ x: 3, y: 3 })
+	let trans = { x: left - translation.x, y: top - translation.y };
 	useEffect(() => {
-		let clone = { ...translation };
-		if (visible) {
-			clone.initialTranslation = { x: left * oneUnitLength, y: top * oneUnitLength };
-		} else {
-			clone.currentTranslation = { x: left * oneUnitLength, y: top * oneUnitLength };
-		}
-		setTranslation(clone);
+		setVisible(true);
 	}, [top, left])
-	useEffect(() => {
-		setVisible(!visible)
-	}, [translation])
-	return (<ZStack position={'absolute'} top={0 * oneUnitLength} left={0 * oneUnitLength} alignItems={'center'} justifyContent={'center'} >
-		{/* translate location */}
-		<PresenceTransition visible={visible} initial={{
-			translateX: translation.initialTranslation.x,
-			translateY: translation.initialTranslation.y,
-		}}
-			animate={{ translateX: translation.currentTranslation.x, translateY: translation.currentTranslation.y, transition: { duration: 500 } }}
-			exit={{ translateX: translation.initialTranslation.x, translateY: translation.initialTranslation.y, transition: { duration: 500 } }}>
+	let complete = (a) => {
+		if (a === 'entered') {
+			setVisible(() => false);
+			setTranslation(() => ({ x: left, y: top }))
+		}
+	}
+	return (<ZStack position={'absolute'} top={translation.y * oneUnitLength} left={translation.x * oneUnitLength} alignItems={'center'} justifyContent={'center'} >
+		{visible ? <PresenceTransition visible={visible}
+			onTransitionComplete={complete}
+			initial={{
+				translateX: 0,
+				translateY: 0,
+			}}
+			animate={{
+				translateX: trans.x * oneUnitLength,
+				translateY: trans.y * oneUnitLength,
+				transition: { duration: 500 }
+			}}>
 			<Circle w={oneUnitLength / 2} h={oneUnitLength / 2} bg={CoinColor[player].bg} ></Circle >
-		</PresenceTransition>
+		</PresenceTransition> : <Pressable onPress={OnClick}>
+			<Circle w={oneUnitLength / 2} h={oneUnitLength / 2} bg={CoinColor[player].bg} ></Circle >
+		</Pressable>}
 	</ZStack >)
 }

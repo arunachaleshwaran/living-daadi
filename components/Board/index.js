@@ -67,18 +67,15 @@ const node = [
 	{ key: '66', location: { x: 6, y: 6 } },
 ]
 const whiteCoins = [
-	{
-		key: 0, location: { x: 0, y: 0 },
-		key: 1, location: { x: 1, y: 0 },
-		key: 2, location: { x: 0, y: 0 },
-		key: 3, location: { x: 1, y: 0 },
-		key: 4, location: { x: 0, y: 0 },
-		key: 5, location: { x: 1, y: 0 },
-		key: 6, location: { x: 0, y: 0 },
-		key: 7, location: { x: 1, y: 0 },
-		key: 8, location: { x: 0, y: 0 },
-
-	},
+	{ key: 0, location: { x: 0, y: 0 } },
+	{ key: 1, location: { x: 1, y: 0 } },
+	{ key: 2, location: { x: 2, y: 0 } },
+	{ key: 3, location: { x: 3, y: 0 } },
+	{ key: 4, location: { x: 4, y: 0 } },
+	{ key: 5, location: { x: 5, y: 0 } },
+	{ key: 6, location: { x: 6, y: 0 } },
+	{ key: 7, location: { x: 7, y: 0 } },
+	{ key: 8, location: { x: 8, y: 0 } },
 ]
 export default function Board() {
 	const board = useRef({ current: null })
@@ -99,9 +96,6 @@ export default function Board() {
 	useEffect(() => {
 		setSize(() => board.current.clientWidth / 6)
 	}, [board.current.clientHeight])
-	const clickAction = () => {
-		setInput(() => input + 1)
-	}
 	return (
 		<CenterSquare>
 			<Box position={'relative'} justifyContent={'center'} alignItems={'center'} m={'10%'} ref={board}>
@@ -117,12 +111,9 @@ export default function Board() {
 					{node.map(({ key, location }) => (
 						<Node key={key} top={location.y} left={location.x} oneUnitLength={size} />
 					))}
-					{/* {whiteCoins.map(({ key, location }) => <Coins key={key} top={locations[input].y} left={locations[input].x} oneUnitLength={size} player={'BLACK'}></Coins>)} */}
-					<Coins top={locations[input].y} left={locations[input].x} oneUnitLength={size} player={'BLACK'}></Coins>
+					{whiteCoins.map((i) => (<Coins key={i.key} top={i.location.y} left={i.location.x} oneUnitLength={size} player={'BLACK'} ></Coins>))}
+					{/* <Coins top={locations[input].y} left={locations[input].x} oneUnitLength={size} player={'BLACK'} OnClick={clickAction}></Coins> */}
 				</>}
-				<Pressable onPress={clickAction}>
-					<Text>Press me</Text>
-				</Pressable>
 			</Box>
 		</CenterSquare>
 	)
