@@ -1,1 +1,0 @@
-export default { bg: 'blue.800', boardColor: 'white' };
