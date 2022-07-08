@@ -60,8 +60,9 @@ export default function Board() {
 		setClickNodeState(() => ({ isWhite: !isWhite, key: null }))
 	}
 	useEffect(() => {
-		setSize(() => board.current.clientWidth / 6)
-	}, [board.current.clientWidth])
+		const size = board.current.clientHeight ? board.current.clientHeight : board.current.clientWidth;
+		setSize(() => size / 6)
+	}, [board.current.clientWidth, board.current.clientHeight])
 	useEffect(() => {
 		arrangeRandomCoins(setBlackCoins, setWhiteCoins);
 	}, [])
