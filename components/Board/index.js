@@ -64,7 +64,7 @@ export default function Board() {
 		setSize(() => size / 6)
 	}, [board.current.clientWidth, board.current.clientHeight])
 	useEffect(() => {
-		arrangeRandomCoins(setBlackCoins, setWhiteCoins);
+		arrangeRandomCoins(setBlackCoins, setWhiteCoins, nodes);
 	}, [])
 	return (
 		<CenterSquare>
