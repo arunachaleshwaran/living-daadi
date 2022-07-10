@@ -4,31 +4,35 @@ function findEdge(key) {
 	if (t === undefined) throw Error('Key not found')
 	return t;
 }
+/**
+ * R,D,L,U are the 4 edges of the node
+ * RR, RL, LL, DU, DD, UU winning logic
+ */
 let node = [
-	{ key: '00', occupied: false, location: { x: 0, y: 0 }, R: { vertex: null, path: findEdge('0003') }, D: { vertex: findEdge('0030'), path: null }, U: { vertex: null, path: null }, L: { vertex: null, path: null } },
-	{ key: '03', occupied: false, location: { x: 3, y: 0 }, R: { vertex: null, path: findEdge('0306') }, D: { vertex: findEdge('0313'), path: null }, U: { vertex: null, path: null }, L: { vertex: findEdge('0003'), path: null } },
-	{ key: '06', occupied: false, location: { x: 6, y: 0 }, R: { vertex: null, path: null }, D: { vertex: null, path: findEdge('0636') }, U: { vertex: null, path: null }, L: { vertex: findEdge('0306'), path: null } },
-	{ key: '11', occupied: false, location: { x: 1, y: 1 }, R: { vertex: null, path: findEdge('1113') }, D: { vertex: null, path: findEdge('1131') }, U: { vertex: null, path: null }, L: { vertex: null, path: null } },
-	{ key: '13', occupied: false, location: { x: 3, y: 1 }, R: { vertex: null, path: findEdge('1315') }, D: { vertex: null, path: findEdge('1323') }, U: { vertex: null, path: findEdge('0313') }, L: { vertex: null, path: findEdge('1113') } },
-	{ key: '15', occupied: false, location: { x: 5, y: 1 }, R: { vertex: null, path: null }, D: { vertex: null, path: findEdge('1535') }, U: { vertex: null, path: null }, L: { vertex: null, path: findEdge('1315') } },
-	{ key: '22', occupied: false, location: { x: 2, y: 2 }, R: { vertex: null, path: findEdge('2223') }, D: { vertex: null, path: findEdge('2232') }, U: { vertex: null, path: null }, L: { vertex: null, path: null } },
-	{ key: '23', occupied: false, location: { x: 3, y: 2 }, R: { vertex: null, path: findEdge('2324') }, D: { vertex: null, path: null }, U: { vertex: null, path: findEdge('1323') }, L: { vertex: null, path: findEdge('2223') } },
-	{ key: '24', occupied: false, location: { x: 4, y: 2 }, R: { vertex: null, path: null }, D: { vertex: null, path: findEdge('2434') }, U: { vertex: null, path: null }, L: { vertex: null, path: findEdge('2324') } },
-	{ key: '30', occupied: false, location: { x: 0, y: 3 }, R: { vertex: null, path: findEdge('3031') }, D: { vertex: null, path: null }, U: { vertex: null, path: findEdge('0030') }, L: { vertex: null, path: findEdge('3060') } },
-	{ key: '31', occupied: false, location: { x: 1, y: 3 }, R: { vertex: null, path: findEdge('3132') }, D: { vertex: null, path: findEdge('3151') }, U: { vertex: null, path: findEdge('1131') }, L: { vertex: null, path: findEdge('3031') } },
-	{ key: '32', occupied: false, location: { x: 2, y: 3 }, R: { vertex: null, path: null }, D: { vertex: null, path: findEdge('3242') }, U: { vertex: null, path: findEdge('2232') }, L: { vertex: null, path: findEdge('3132') } },
-	{ key: '34', occupied: false, location: { x: 4, y: 3 }, R: { vertex: null, path: findEdge('3435') }, D: { vertex: null, path: null }, U: { vertex: null, path: findEdge('2434') }, L: { vertex: null, path: null } },
-	{ key: '35', occupied: false, location: { x: 5, y: 3 }, R: { vertex: null, path: findEdge('3536') }, D: { vertex: null, path: findEdge('3555') }, U: { vertex: null, path: findEdge('1535') }, L: { vertex: null, path: findEdge('3435') } },
-	{ key: '36', occupied: false, location: { x: 6, y: 3 }, R: { vertex: null, path: null }, D: { vertex: null, path: findEdge('3666') }, U: { vertex: null, path: findEdge('0636') }, L: { vertex: null, path: findEdge('3536') } },
-	{ key: '42', occupied: false, location: { x: 2, y: 4 }, R: { vertex: null, path: findEdge('4243') }, D: { vertex: null, path: null }, U: { vertex: null, path: findEdge('3242') }, L: { vertex: null, path: null } },
-	{ key: '43', occupied: false, location: { x: 3, y: 4 }, R: { vertex: null, path: findEdge('4344') }, D: { vertex: null, path: findEdge('4353') }, U: { vertex: null, path: null }, L: { vertex: null, path: findEdge('4243') } },
-	{ key: '44', occupied: false, location: { x: 4, y: 4 }, R: { vertex: null, path: null }, D: { vertex: null, path: null }, U: { vertex: null, path: findEdge('3151') }, L: { vertex: null, path: findEdge('4344') } },
-	{ key: '51', occupied: false, location: { x: 1, y: 5 }, R: { vertex: null, path: findEdge('5153') }, D: { vertex: null, path: null }, U: { vertex: null, path: null }, L: { vertex: null, path: findEdge('5153') } },
-	{ key: '53', occupied: false, location: { x: 3, y: 5 }, R: { vertex: null, path: findEdge('5355') }, D: { vertex: null, path: findEdge('5363') }, U: { vertex: null, path: findEdge('4353') }, L: { vertex: null, path: null } },
-	{ key: '55', occupied: false, location: { x: 5, y: 5 }, R: { vertex: null, path: null }, D: { vertex: null, path: null }, U: { vertex: null, path: findEdge('3555') }, L: { vertex: null, path: findEdge('5355') } },
-	{ key: '60', occupied: false, location: { x: 0, y: 6 }, R: { vertex: null, path: findEdge('6063') }, D: { vertex: null, path: null }, U: { vertex: null, path: findEdge('3060') }, L: { vertex: null, path: findEdge('6366') } },
-	{ key: '63', occupied: false, location: { x: 3, y: 6 }, R: { vertex: null, path: findEdge('6366') }, D: { vertex: null, path: null }, U: { vertex: null, path: findEdge('5363') }, L: { vertex: null, path: findEdge('6063') } },
-	{ key: '66', occupied: false, location: { x: 6, y: 6 }, R: { vertex: null, path: null }, D: { vertex: null, path: null }, U: { vertex: null, path: findEdge('3666') }, L: { vertex: null, path: null } },
+	{ key: '00', location: { x: 0, y: 0 }, winningLogic: [['R', 'R'], ['D', 'D']], R: { vertex: null, path: findEdge('0003') }, D: { vertex: findEdge('0030'), path: null }, U: { vertex: null, path: null }, L: { vertex: null, path: null } },
+	{ key: '03', location: { x: 3, y: 0 }, winningLogic: [['R', 'L'], ['D', 'D']], R: { vertex: null, path: findEdge('0306') }, D: { vertex: findEdge('0313'), path: null }, U: { vertex: null, path: null }, L: { vertex: findEdge('0003'), path: null } },
+	{ key: '06', location: { x: 6, y: 0 }, winningLogic: [['L', 'L'], ['D', 'D']], R: { vertex: null, path: null }, D: { vertex: null, path: findEdge('0636') }, U: { vertex: null, path: null }, L: { vertex: findEdge('0306'), path: null } },
+	{ key: '11', location: { x: 1, y: 1 }, winningLogic: [['R', 'R'], ['D', 'D']], R: { vertex: null, path: findEdge('1113') }, D: { vertex: null, path: findEdge('1131') }, U: { vertex: null, path: null }, L: { vertex: null, path: null } },
+	{ key: '13', location: { x: 3, y: 1 }, winningLogic: [['R', 'L'], ['D', 'U']], R: { vertex: null, path: findEdge('1315') }, D: { vertex: null, path: findEdge('1323') }, U: { vertex: null, path: findEdge('0313') }, L: { vertex: null, path: findEdge('1113') } },
+	{ key: '15', location: { x: 5, y: 1 }, winningLogic: [['L', 'L'], ['D', 'D']], R: { vertex: null, path: null }, D: { vertex: null, path: findEdge('1535') }, U: { vertex: null, path: null }, L: { vertex: null, path: findEdge('1315') } },
+	{ key: '22', location: { x: 2, y: 2 }, winningLogic: [['R', 'R'], ['D', 'D']], R: { vertex: null, path: findEdge('2223') }, D: { vertex: null, path: findEdge('2232') }, U: { vertex: null, path: null }, L: { vertex: null, path: null } },
+	{ key: '23', location: { x: 3, y: 2 }, winningLogic: [['R', 'L'], ['U', 'U']], R: { vertex: null, path: findEdge('2324') }, D: { vertex: null, path: null }, U: { vertex: null, path: findEdge('1323') }, L: { vertex: null, path: findEdge('2223') } },
+	{ key: '24', location: { x: 4, y: 2 }, winningLogic: [['L', 'L'], ['D', 'D']], R: { vertex: null, path: null }, D: { vertex: null, path: findEdge('2434') }, U: { vertex: null, path: null }, L: { vertex: null, path: findEdge('2324') } },
+	{ key: '30', location: { x: 0, y: 3 }, winningLogic: [['R', 'R'], ['D', 'U']], R: { vertex: null, path: findEdge('3031') }, D: { vertex: null, path: null }, U: { vertex: null, path: findEdge('0030') }, L: { vertex: null, path: findEdge('3060') } },
+	{ key: '31', location: { x: 1, y: 3 }, winningLogic: [['R', 'L'], ['D', 'U']], R: { vertex: null, path: findEdge('3132') }, D: { vertex: null, path: findEdge('3151') }, U: { vertex: null, path: findEdge('1131') }, L: { vertex: null, path: findEdge('3031') } },
+	{ key: '32', location: { x: 2, y: 3 }, winningLogic: [['L', 'L'], ['D', 'U']], R: { vertex: null, path: null }, D: { vertex: null, path: findEdge('3242') }, U: { vertex: null, path: findEdge('2232') }, L: { vertex: null, path: findEdge('3132') } },
+	{ key: '34', location: { x: 4, y: 3 }, winningLogic: [['R', 'R'], ['D', 'U']], R: { vertex: null, path: findEdge('3435') }, D: { vertex: null, path: null }, U: { vertex: null, path: findEdge('2434') }, L: { vertex: null, path: null } },
+	{ key: '35', location: { x: 5, y: 3 }, winningLogic: [['R', 'L'], ['D', 'U']], R: { vertex: null, path: findEdge('3536') }, D: { vertex: null, path: findEdge('3555') }, U: { vertex: null, path: findEdge('1535') }, L: { vertex: null, path: findEdge('3435') } },
+	{ key: '36', location: { x: 6, y: 3 }, winningLogic: [['L', 'L'], ['D', 'U']], R: { vertex: null, path: null }, D: { vertex: null, path: findEdge('3666') }, U: { vertex: null, path: findEdge('0636') }, L: { vertex: null, path: findEdge('3536') } },
+	{ key: '42', location: { x: 2, y: 4 }, winningLogic: [['R', 'R'], ['U', 'U']], R: { vertex: null, path: findEdge('4243') }, D: { vertex: null, path: null }, U: { vertex: null, path: findEdge('3242') }, L: { vertex: null, path: null } },
+	{ key: '43', location: { x: 3, y: 4 }, winningLogic: [['R', 'L'], ['D', 'D']], R: { vertex: null, path: findEdge('4344') }, D: { vertex: null, path: findEdge('4353') }, U: { vertex: null, path: null }, L: { vertex: null, path: findEdge('4243') } },
+	{ key: '44', location: { x: 4, y: 4 }, winningLogic: [['L', 'L'], ['U', 'U']], R: { vertex: null, path: null }, D: { vertex: null, path: null }, U: { vertex: null, path: findEdge('3151') }, L: { vertex: null, path: findEdge('4344') } },
+	{ key: '51', location: { x: 1, y: 5 }, winningLogic: [['R', 'R'], ['U', 'U']], R: { vertex: null, path: findEdge('5153') }, D: { vertex: null, path: null }, U: { vertex: null, path: null }, L: { vertex: null, path: findEdge('5153') } },
+	{ key: '53', location: { x: 3, y: 5 }, winningLogic: [['R', 'L'], ['D', 'U']], R: { vertex: null, path: findEdge('5355') }, D: { vertex: null, path: findEdge('5363') }, U: { vertex: null, path: findEdge('4353') }, L: { vertex: null, path: null } },
+	{ key: '55', location: { x: 5, y: 5 }, winningLogic: [['L', 'L'], ['U', 'U']], R: { vertex: null, path: null }, D: { vertex: null, path: null }, U: { vertex: null, path: findEdge('3555') }, L: { vertex: null, path: findEdge('5355') } },
+	{ key: '60', location: { x: 0, y: 6 }, winningLogic: [['R', 'R'], ['U', 'U']], R: { vertex: null, path: findEdge('6063') }, D: { vertex: null, path: null }, U: { vertex: null, path: findEdge('3060') }, L: { vertex: null, path: findEdge('6366') } },
+	{ key: '63', location: { x: 3, y: 6 }, winningLogic: [['R', 'L'], ['U', 'U']], R: { vertex: null, path: findEdge('6366') }, D: { vertex: null, path: null }, U: { vertex: null, path: findEdge('5363') }, L: { vertex: null, path: findEdge('6063') } },
+	{ key: '66', location: { x: 6, y: 6 }, winningLogic: [['L', 'L'], ['U', 'U']], R: { vertex: null, path: null }, D: { vertex: null, path: null }, U: { vertex: null, path: findEdge('3666') }, L: { vertex: null, path: null } },
 ]
 
 function findNode(key) {
@@ -81,7 +85,7 @@ findNode('42').U.vertex = findNode('32')
 findNode('42').R.vertex = findNode('43')
 findNode('43').L.vertex = findNode('42')
 findNode('43').D.vertex = findNode('53')
-findNode('43').U.vertex = findNode('44')
+findNode('43').R.vertex = findNode('44')
 findNode('44').L.vertex = findNode('43')
 findNode('44').U.vertex = findNode('34')
 findNode('51').U.vertex = findNode('31')
