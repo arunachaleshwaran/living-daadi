@@ -51,6 +51,14 @@ export default function Board() {
 		}
 		setClickNodeState(() => ({ isWhite: !isWhite, key: null }))
 	}
+	const isActive = (key, isEdge = false) => {
+		if (!clickNodeState.key) return false;
+		const attr = isEdge ? 'path' : 'vertex'
+		const coinEdge = clickNodeState.isWhite ? whiteCoins[findEleIndex(whiteCoins, clickNodeState.key)].node : blackCoins[findEleIndex(blackCoins, clickNodeState.key)].node;
+		if (coinEdge.R[attr]?.key === key || coinEdge.D[attr]?.key === key || coinEdge.L[attr]?.key === key || coinEdge.U[attr]?.key === key)
+			return true;
+		return false;
+	}
 	useEffect(() => {
 		const size = board.current.clientHeight ? board.current.clientHeight : board.current.clientWidth;
 		setSize(() => size / 6)
@@ -69,7 +77,8 @@ export default function Board() {
 							oneUnitLength={size}
 							isHorizontal={isHorizontal}
 							top={startingLocation.y}
-							left={startingLocation.x} />)}
+							left={startingLocation.x}
+							active={isActive(key, true)} />)}
 					{nodes.map(({ key, location }) => (
 						<Node
 							key={key}
@@ -77,7 +86,8 @@ export default function Board() {
 							left={location.x}
 							oneUnitLength={size}
 							onPress={() => clickNode(key)}
-							disabled={isNodeDisabled(key)} />
+							disabled={isNodeDisabled(key)}
+							active={isActive(key)} />
 					))}
 					{whiteCoins.map((i) => (<Coins
 						key={i.key}
