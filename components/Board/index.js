@@ -6,7 +6,7 @@ import CenterSquare from '../CenterSquare'
 import Coins from './Coins'
 import nodes from './Node.model'
 import edges from './Edge.model'
-import { arrangeRandomCoins } from './actions'
+import { arrangeRandomCoins, findEleIndex } from './actions'
 
 export default function Board() {
 	const [size, setSize] = useState(10)
@@ -14,14 +14,6 @@ export default function Board() {
 	const [blackCoins, setBlackCoins] = useState([]);
 	const board = useRef({ current: null })
 	const [clickNodeState, setClickNodeState] = useState({ isWhite: true, key: null })
-	const findEleIndex = (arr, key) => {
-		const i = arr.findIndex(ele => ele.key === key)
-		if (i === -1) {
-			setClickNodeState(() => ({ isWhite: clickNodeState.isWhite, key: null }))
-			throw new Error(`Element with key ${key} not found`)
-		}
-		return i;
-	}
 	const isNodeDisabled = (key) => {
 		if (!clickNodeState.key) return true
 		const node = nodes[findEleIndex(nodes, clickNodeState.key)];
