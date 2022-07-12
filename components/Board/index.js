@@ -6,7 +6,7 @@ import CenterSquare from '../CenterSquare'
 import Coins from './Coins'
 import nodes from './Node.model'
 import edges from './Edge.model'
-import { arrangeRandomCoins, findEleIndex } from './actions'
+import { arrangeRandomCoins, findEle } from './actions'
 
 export default function Board() {
 	const [size, setSize] = useState(10)
@@ -16,7 +16,7 @@ export default function Board() {
 	const [clickNodeState, setClickNodeState] = useState({ isWhite: true, key: null })
 	const isNodeDisabled = (key) => {
 		if (!clickNodeState.key) return true
-		const node = nodes[findEleIndex(nodes, clickNodeState.key)];
+		const node = findEle(nodes, clickNodeState.key);
 		if (node.R.vertex?.key === key || node.D.vertex?.key === key || node.L.vertex?.key === key || node.U.vertex?.key === key)
 			return false
 		return true
@@ -40,13 +40,13 @@ export default function Board() {
 		setClickNodeState(() => ({ isWhite: clickNodeState.isWhite, key }))
 	}
 	const clickNode = (key) => {
-		const node = nodes[findEleIndex(nodes, key)];
+		const node = findEle(nodes, key);
 		const isWhite = clickNodeState.isWhite
 		if (isWhite) {
-			whiteCoins[findEleIndex(whiteCoins, clickNodeState.key)].node = node;
+			findEle(whiteCoins, clickNodeState.key).node = node;
 			setWhiteCoins(() => [...whiteCoins]);
 		} else {
-			blackCoins[findEleIndex(blackCoins, clickNodeState.key)].node = node;
+			findEle(blackCoins, clickNodeState.key).node = node;
 			setBlackCoins(() => [...blackCoins])
 		}
 		setClickNodeState(() => ({ isWhite: !isWhite, key: null }))
@@ -54,7 +54,7 @@ export default function Board() {
 	const isActive = (key, isEdge = false) => {
 		if (!clickNodeState.key) return false;
 		const attr = isEdge ? 'path' : 'vertex'
-		const coinEdge = clickNodeState.isWhite ? whiteCoins[findEleIndex(whiteCoins, clickNodeState.key)].node : blackCoins[findEleIndex(blackCoins, clickNodeState.key)].node;
+		const coinEdge = clickNodeState.isWhite ? findEle(whiteCoins, clickNodeState.key).node : findEle(blackCoins, clickNodeState.key).node;
 		if (coinEdge.R[attr]?.key === key || coinEdge.D[attr]?.key === key || coinEdge.L[attr]?.key === key || coinEdge.U[attr]?.key === key)
 			return true;
 		return false;
@@ -97,7 +97,7 @@ export default function Board() {
 						disabled={isCoinDisabled('WHITE', i.key)}
 						onPress={() => clickCoin(i.key)} ></Coins>))}
 					{blackCoins.map((i) => (<Coins
-						key={i.key} id={i.key}
+						key={i.key}
 						top={i.node.location.y} left={i.node.location.x}
 						completed={i.completed}
 						oneUnitLength={size} player={'BLACK'}

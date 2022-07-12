@@ -1,3 +1,3 @@
 export { arrangeRandomCoins } from "./arrangeRandomCoins";
-export { findEleIndex } from "./findEleIndex";
+export { findEle } from "./findEle";
 export { winningLogicOfCoin } from "./winningLogicOfCoin";
