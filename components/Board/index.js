@@ -16,7 +16,7 @@ export default function Board() {
 	const [clickNodeState, setClickNodeState] = useState({ isWhite: true, key: null })
 	const isNodeDisabled = (key) => {
 		if (!clickNodeState.key) return true
-		const node = findEle(nodes, clickNodeState.key);
+		const node = findEle(clickNodeState.isWhite ? whiteCoins : blackCoins, clickNodeState.key).node;
 		if (node.R.vertex?.key === key || node.D.vertex?.key === key || node.L.vertex?.key === key || node.U.vertex?.key === key)
 			return false
 		return true
