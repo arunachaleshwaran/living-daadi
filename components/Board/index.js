@@ -7,7 +7,7 @@ import Coins from './Coins'
 import nodes from './Node.model'
 import edges from './Edge.model'
 import { arrangeRandomCoins, findEle } from './actions'
-
+import { CAN_MOVE, CAN_NOT_MOVE, NOT_ACTIVE } from './constant'
 export default function Board() {
 	const [size, setSize] = useState(10)
 	const [whiteCoins, setWhiteCoins] = useState([]);
@@ -51,13 +51,32 @@ export default function Board() {
 		}
 		setClickNodeState(() => ({ isWhite: !isWhite, key: null }))
 	}
-	const isActive = (key, isEdge = false) => {
-		if (!clickNodeState.key) return false;
+	/**
+	 * 
+	 * @param {string} key - key of node or edge
+	 * @param {bool} isEdge - mention if it is edge or node
+	 * @returns {'CAN_MOVE'|'CAN_NOT_MOVE'|'NOT_ACTIVE'}
+	 */
+	const activeState = (key, isEdge = false) => {
+		if (!clickNodeState.key) return NOT_ACTIVE;
 		const attr = isEdge ? 'path' : 'vertex'
 		const coinEdge = clickNodeState.isWhite ? findEle(whiteCoins, clickNodeState.key).node : findEle(blackCoins, clickNodeState.key).node;
-		if (coinEdge.R[attr]?.key === key || coinEdge.D[attr]?.key === key || coinEdge.L[attr]?.key === key || coinEdge.U[attr]?.key === key)
-			return true;
-		return false;
+		const allCoin = whiteCoins.concat(blackCoins);
+		const isPresentInDirection = (direction) => allCoin.filter(i => (direction ? i.node[direction][attr]?.key : i.node[key]) === key).length > 0;
+		if (coinEdge.R[attr]?.key === key || coinEdge.D[attr]?.key === key || coinEdge.L[attr]?.key === key || coinEdge.U[attr]?.key === key) {
+			if (isEdge) {
+				if ((coinEdge.R[attr]?.key === key && !isPresentInDirection('L'))
+					|| (coinEdge.D[attr]?.key === key && !isPresentInDirection('U'))
+					|| (coinEdge.L[attr]?.key === key && !isPresentInDirection('R'))
+					|| (coinEdge.U[attr]?.key === key && !isPresentInDirection('D'))) {
+					return CAN_MOVE
+				}
+			} else {
+				if (!isPresentInDirection()) return CAN_MOVE
+			}
+			return CAN_NOT_MOVE
+		}
+		return NOT_ACTIVE;
 	}
 	useEffect(() => {
 		const size = board.current.clientHeight ? board.current.clientHeight : board.current.clientWidth;
@@ -78,7 +97,7 @@ export default function Board() {
 							isHorizontal={isHorizontal}
 							top={startingLocation.y}
 							left={startingLocation.x}
-							active={isActive(key, true)} />)}
+							active={activeState(key, true)} />)}
 					{nodes.map(({ key, location }) => (
 						<Node
 							key={key}
@@ -87,7 +106,7 @@ export default function Board() {
 							oneUnitLength={size}
 							onPress={() => clickNode(key)}
 							disabled={isNodeDisabled(key)}
-							active={isActive(key)} />
+							active={activeState(key)} />
 					))}
 					{whiteCoins.map((i) => (<Coins
 						key={i.key}
