@@ -103,5 +103,6 @@ findNode('63').U.vertex = findNode('53')
 findNode('63').R.vertex = findNode('66')
 findNode('66').L.vertex = findNode('63')
 findNode('66').U.vertex = findNode('36')
+Object.freeze(node)
 
 export default node

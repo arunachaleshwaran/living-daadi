@@ -6,7 +6,7 @@ import CenterSquare from '../CenterSquare'
 import Coins from './Coins'
 import nodes from './Node.model'
 import edges from './Edge.model'
-import { arrangeRandomCoins, findEle } from './actions'
+import { arrangeRandomCoins, findEle, winningLogicOfCoin } from './actions'
 import { CAN_MOVE, CAN_NOT_MOVE, NOT_ACTIVE } from './constant'
 export default function Board() {
 	const [size, setSize] = useState(10)
@@ -39,6 +39,30 @@ export default function Board() {
 		}
 		setClickNodeState(() => ({ isWhite: clickNodeState.isWhite, key }))
 	}
+	const removeCoin = (key, isWhite, winBy) => {
+		let coins = isWhite ? whiteCoins : blackCoins;
+		const matchElementId = (key) => coins.findIndex(i => i.node.key === key)
+		const node = findEle(coins, key).node;
+		const win = coins[coins.findIndex(i => i.key === key)].node.winningLogic[winBy];
+		let index = findEle(coins, key, { returnIndex: true });
+		coins.splice(index, 1);
+		if (win[0] === win[1]) {
+			index = matchElementId(node[win[0]].vertex[win[0]].vertex.key);
+			coins.splice(index, 1);
+			index = matchElementId(node[win[0]].vertex.key);
+			coins.splice(index, 1);
+		} else {
+			index = matchElementId(node[win[0]].vertex.key);
+			coins.splice(index, 1);
+			index = matchElementId(node[win[1]].vertex.key);
+			coins.splice(index, 1);
+		}
+		if (isWhite) {
+			setWhiteCoins(coins);
+		} else {
+			setBlackCoins(coins);
+		}
+	}
 	const clickNode = (key) => {
 		const node = findEle(nodes, key);
 		const isWhite = clickNodeState.isWhite
@@ -50,6 +74,13 @@ export default function Board() {
 			setBlackCoins(() => [...blackCoins])
 		}
 		setClickNodeState(() => ({ isWhite: !isWhite, key: null }))
+		const coins = isWhite ? whiteCoins : blackCoins;
+		const winBy = winningLogicOfCoin(coins, clickNodeState.key, false, nodes)
+		if (winBy) {
+			setTimeout(() => {
+				removeCoin(clickNodeState.key, isWhite, winBy - 1)
+			}, 600);
+		}
 	}
 	/**
 	 * 
