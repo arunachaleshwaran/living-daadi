@@ -40,22 +40,17 @@ export default function Board() {
 		setClickNodeState(() => ({ isWhite: clickNodeState.isWhite, key }))
 	}
 	const removeCoin = (key, isWhite, winBy) => {
-		let coins = isWhite ? whiteCoins : blackCoins;
-		const matchElementId = (key) => coins.findIndex(i => i.node.key === key)
+		let { coins, dropNode } = isWhite ? { whiteCoins, RIGHT_DROP } : { blackCoins, LEFT_DROP };
 		const node = findEle(coins, key).node;
 		const win = coins[coins.findIndex(i => i.key === key)].node.winningLogic[winBy];
-		let index = findEle(coins, key, { returnIndex: true });
-		coins.splice(index, 1);
+		const matchElementId = (key) => coins.find(i => i.node.key === key)
+		findEle(coins, key).node = dropNode;
 		if (win[0] === win[1]) {
-			index = matchElementId(node[win[0]].vertex[win[0]].vertex.key);
-			coins.splice(index, 1);
-			index = matchElementId(node[win[0]].vertex.key);
-			coins.splice(index, 1);
+			matchElementId(node[win[0]].vertex[win[0]].vertex.key).node = dropNode;
+			matchElementId(node[win[0]].vertex.key).node = dropNode;
 		} else {
-			index = matchElementId(node[win[0]].vertex.key);
-			coins.splice(index, 1);
-			index = matchElementId(node[win[1]].vertex.key);
-			coins.splice(index, 1);
+			matchElementId(node[win[0]].vertex.key).node = dropNode;
+			matchElementId(node[win[1]].vertex.key).node = dropNode;
 		}
 		if (isWhite) {
 			setWhiteCoins(coins);
