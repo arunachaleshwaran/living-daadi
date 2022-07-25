@@ -7,7 +7,7 @@ import Coins from './Coins'
 import nodes from './Node.model'
 import edges from './Edge.model'
 import { arrangeRandomCoins, findEle, winningLogicOfCoin } from './actions'
-import { CAN_MOVE, CAN_NOT_MOVE, NOT_ACTIVE } from './constant'
+import { MOVE_STATE, LEFT_DROP, RIGHT_DROP } from './constant'
 export default function Board() {
 	const [size, setSize] = useState(10)
 	const [whiteCoins, setWhiteCoins] = useState([]);
@@ -86,10 +86,10 @@ export default function Board() {
 	 * 
 	 * @param {string} key - key of node or edge
 	 * @param {bool} isEdge - mention if it is edge or node
-	 * @returns {'CAN_MOVE'|'CAN_NOT_MOVE'|'NOT_ACTIVE'}
+	 * @returns {MOVE_STATE}
 	 */
 	const activeState = (key, isEdge = false) => {
-		if (!clickNodeState.key) return NOT_ACTIVE;
+		if (!clickNodeState.key) return MOVE_STATE.DEFAULT;
 		const attr = isEdge ? 'path' : 'vertex'
 		const coinEdge = clickNodeState.isWhite ? findEle(whiteCoins, clickNodeState.key).node : findEle(blackCoins, clickNodeState.key).node;
 		const allCoin = whiteCoins.concat(blackCoins);
@@ -100,14 +100,14 @@ export default function Board() {
 					|| (coinEdge.D[attr]?.key === key && !isPresentInDirection('U'))
 					|| (coinEdge.L[attr]?.key === key && !isPresentInDirection('R'))
 					|| (coinEdge.U[attr]?.key === key && !isPresentInDirection('D'))) {
-					return CAN_MOVE
+					return MOVE_STATE.CAN_MOVE
 				}
 			} else {
-				if (!isPresentInDirection()) return CAN_MOVE
+				if (!isPresentInDirection()) return MOVE_STATE.CAN_MOVE
 			}
-			return CAN_NOT_MOVE
+			return MOVE_STATE.CAN_NOT_MOVE
 		}
-		return NOT_ACTIVE;
+		return MOVE_STATE.DEFAULT;
 	}
 	useEffect(() => {
 		const size = board.current.clientHeight ? board.current.clientHeight : board.current.clientWidth;
@@ -153,6 +153,7 @@ export default function Board() {
 						oneUnitLength={size} player={'BLACK'}
 						disabled={isCoinDisabled('BLACK', i.key)}
 						onPress={() => clickCoin(i.key)} ></Coins>))}
+					<Coins top={7} left={6.5} completed={false} oneUnitLength={size} player={'BLACK'} disabled={false}></Coins>
 				</>}
 			</Box>
 		</CenterSquare>

@@ -1,18 +1,18 @@
 import { Box } from 'native-base'
 import React from 'react'
 import { BoardColor } from '../../theme'
-import { CAN_MOVE, CAN_NOT_MOVE, NOT_ACTIVE } from './constant'
+import { MOVE_STATE } from './constant'
 
 export default function Edge({ unit, oneUnitLength, top, left, isHorizontal, active }) {
 	let bg;
 	switch (active) {
-		case CAN_MOVE:
+		case MOVE_STATE.CAN_MOVE:
 			bg = BoardColor.active;
 			break;
-		case CAN_NOT_MOVE:
+		case MOVE_STATE.CAN_NOT_MOVE:
 			bg = BoardColor.inactive;
 			break;
-		case NOT_ACTIVE:
+		case MOVE_STATE.DEFAULT:
 			bg = BoardColor.bg;
 			break;
 		default:

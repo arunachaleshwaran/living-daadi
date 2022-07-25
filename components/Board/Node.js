@@ -2,18 +2,18 @@ import { Circle, ZStack } from 'native-base'
 import React from 'react'
 import { Pressable } from 'native-base'
 import { BoardColor } from '../../theme'
-import { CAN_MOVE, CAN_NOT_MOVE, NOT_ACTIVE } from './constant'
+import { MOVE_STATE } from './constant'
 
 export default function Node({ oneUnitLength, top, left, onPress, disabled, active = false }) {
 	let bg;
 	switch (active) {
-		case CAN_MOVE:
+		case MOVE_STATE.CAN_MOVE:
 			bg = BoardColor.active;
 			break;
-		case CAN_NOT_MOVE:
+		case MOVE_STATE.CAN_NOT_MOVE:
 			bg = BoardColor.inactive;
 			break;
-		case NOT_ACTIVE:
+		case MOVE_STATE.DEFAULT:
 			bg = BoardColor.bg;
 			break;
 		default:
